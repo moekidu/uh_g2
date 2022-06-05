@@ -12,4 +12,4 @@ Karla Melissa Ramirez
 
 En esta tarea se crea un RESTful API con PostgreSQL, NodeJS y Express en Ubuntu.
 
-Ver archivos 
+Ver archivos 'Creacion API' y 'Scripts' para mas el paso a paso.
