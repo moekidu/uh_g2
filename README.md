@@ -13,5 +13,6 @@ Karla Melissa Ramirez
 En esta tarea se crea un RESTful API con PostgreSQL, NodeJS y Express en Ubuntu.
 
 Ver archivos en orden: 
-'Instalacion Postgres en Docker'
-'Creacion API' y 'Scripts' para mas el paso a paso.
+1. 'Instalacion Postgres en Docker'
+2. 'Scripts'
+3. 'Creacion API en Ubuntu'.
