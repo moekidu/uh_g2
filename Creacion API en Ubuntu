@@ -1,0 +1,117 @@
+Creacion API en Ubuntu.
+
+Crear carpeta y accesarla >
+  mkdir node-api-postgres
+  cd node-api-postgres/
+  
+Instalar paquetes requeridos >
+  sudo apt install npm
+  npm init -y
+  npm i express pg
+  
+Creacion de archivo index.js >
+  const express = require('express')
+  const bodyParser = require('body-parser')
+  const app = express()
+  const db = require('./queries')
+  const port = 3000
+
+  app.use(bodyParser.json())
+  app.use(
+    bodyParser.urlencoded({
+      extended: true,
+    })
+  )
+
+  app.get('/', (request, response) => {
+    response.json({ info: 'Node.js, Express, and Postgres API' })
+  })
+
+  app.get('/usuarios', db.getUsers)
+  app.get('/usuarios/:id', db.getUserById)
+  app.post('/usuarios', db.createUser)
+  app.put('/usuarios/:id', db.updateUser)
+  app.delete('/usuarios/:id', db.deleteUser)
+
+  app.listen(port, () => {
+    console.log(`App running on port ${port}.`)
+  })
+
+Creacion de archivo queries.js >
+  const Pool = require('pg').Pool
+  const pool = new Pool({
+    user: 'postgres',
+    host: 'localhost',
+    database: 'api',
+    password: 'root',
+    port: 5432,
+  })
+
+  const getUsers = (request, response) => {
+    pool.query('SELECT * FROM usuarios ORDER BY id ASC', (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).json(results.rows)
+    })
+  }
+  
+  const getUserById = (request, response) => {
+    const id = parseInt(request.params.id)
+  
+    pool.query('SELECT * FROM usuarios WHERE id = $1', [id], (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).json(results.rows)
+    })
+  }
+  
+  const createUser = (request, response) => {
+    const { cedula, nombre } = request.body
+  
+    pool.query('INSERT INTO usuarios (cedula, nombre) VALUES ($1, $2)', [cedula, nombre], (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(201).send(`Usuario agregado con ID: ${result.insertId}`)
+    })
+  }
+
+  const updateUser = (request, response) => {
+    const id = parseInt(request.params.id)
+    const { cedula, nombre } = request.body
+  
+    pool.query(
+      'UPDATE usuarios SET cedula = $1, nombre = $2 WHERE id = $3',
+      [cedula, nombre, id],
+      (error, results) => {
+        if (error) {
+          throw error
+        }
+        response.status(200).send(`Usuario modificado con ID: ${id}`)
+      }
+    )
+  }
+
+  const deleteUser = (request, response) => {
+    const id = parseInt(request.params.id)
+  
+    pool.query('DELETE FROM usuarios WHERE id = $1', [id], (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).send(`Usuario borrado con ID: ${id}`)
+    })
+  }
+
+  module.exports = {
+    getUsers,
+    getUserById,
+    createUser,
+    updateUser,
+    deleteUser,
+  }
+  
+Inicializar API >
+  node index.js 
