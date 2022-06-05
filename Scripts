@@ -1,0 +1,22 @@
+Una vez dentro de la base de datos api, creamos las tablas:
+
+api=# CREATE TABLE usuarios (ID SERIAL PRIMARY KEY NOT NULL, cedula INT, nombre VARCHAR(255));
+
+Verificamos:
+
+api=# SELECT * FROM usuarios;
+ id | cedula | nombre 
+----+--------+--------
+(0 rows)
+
+Insertamos un usuarios de prueba:
+
+api=# INSERT INTO usuarios (cedula, nombre) VALUES ('113080245', 'Orlando Chavarria Cruz');
+
+Verificamos:
+
+api=# SELECT * FROM usuarios;
+ id |  cedula   |         nombre         
+----+-----------+------------------------
+  1 | 113080245 | Orlando Chavarria Cruz
+(1 row)
