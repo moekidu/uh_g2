@@ -1,4 +1,4 @@
-CREACION API
+Instalacion Postgres en Docker.
 
 Instalar Docker > 
 	sudo apt install docker.io
